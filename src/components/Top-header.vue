@@ -16,7 +16,7 @@ export default {
       try {
         const data = firebase.auth().signOut()
         console.log(data)
-        this.$router.replace({name: "Home"})
+        this.$router.replace({name: "Login"})
       } catch (error) {
         console.log(error)
       }

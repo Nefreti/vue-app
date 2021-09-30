@@ -5,7 +5,10 @@
       <v-spacer></v-spacer>
       <v-list class="d-flex flex-row">
         <v-list-item>
-          <router-link to="/secret">App</router-link>
+          <router-link to="/">Home</router-link>
+        </v-list-item>
+        <v-list-item>
+          <router-link to="/secret">Main page</router-link>
         </v-list-item>
          </v-list>
       <TopHeader/>

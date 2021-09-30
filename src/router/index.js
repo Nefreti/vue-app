@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import Login from '../views/Login.vue'
 import Secret from '../views/Secret.vue'
 import firebase from "firebase/app";
 import "firebase/firestore";
@@ -13,6 +14,11 @@ const routes = [
         path: '/',
         name: 'Home',
         component: Home
+    },
+    {
+        path: '/login',
+        name: 'Login',
+        component: Login
     },
     {
         path: '/secret',
@@ -33,7 +39,7 @@ router.beforeEach((to, from, next) => {
     const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
     const isAuthenticated = firebase.auth().currentUser
     if (requiresAuth && !isAuthenticated) {
-        next("/home")
+        next("/login")
     } else {
         next()
     }
