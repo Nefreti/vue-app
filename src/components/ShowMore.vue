@@ -5,14 +5,18 @@
           More...
           </v-btn>
         </template>
-<v-card>
+<v-card class="pa-5">
   <v-card-title>Film details</v-card-title>
-  <v-card-title>{{itemForAction.title}}</v-card-title>
+  <v-card-title>Title: {{itemForAction.title}}</v-card-title>
   <v-card-subtitle>{{itemForAction.opening_crawl}}</v-card-subtitle>
-
+  <v-list-item three-line>
+    <v-list-item-content>
+      <v-list-item-title>  Director: {{itemForAction.director}}</v-list-item-title>
+      <v-list-item-title>  Producer: {{itemForAction.producer}}</v-list-item-title>
+      <v-list-item-subtitle>   Release date: {{itemForAction.release_date}}</v-list-item-subtitle>
+    </v-list-item-content>
+  </v-list-item>
 </v-card>
-
-
       </v-dialog>
 </template>
 

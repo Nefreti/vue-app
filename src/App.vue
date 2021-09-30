@@ -1,58 +1,62 @@
 <template>
   <v-app>
-    <v-app-bar
-      app
-      color="primary"
-      dark
-    >
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
-
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
-
+    <v-app-bar app color="primary" dark v-if="loggedId">
+      <v-card-title>Star Wars App</v-card-title>
       <v-spacer></v-spacer>
-
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
-     <v-btn color="green"><router-link to="/">Home</router-link> |</v-btn>
-     <v-btn><router-link to="/about">About</router-link> |</v-btn>
-      <v-btn><router-link to="/secret">Secret</router-link> |</v-btn>
+      <v-list class="d-flex flex-row">
+        <v-list-item>
+          <router-link to="/secret">App</router-link>
+        </v-list-item>
+         </v-list>
+      <TopHeader/>
     </v-app-bar>
-
     <v-main>
-      <router-view/>
+       <router-view/>
     </v-main>
   </v-app>
 </template>
-
 <script>
+
+
+import TopHeader from "@/components/Top-header";
+import firebase from "firebase";
+
 
 export default {
   name: 'App',
-
+  components: {TopHeader},
   data: () => ({
-    //
-  }),
+    loggedId: false,
+  }), created() {
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        this.loggedId = true
+      } else {
+        this.loggedId = false
+      }
+    })
+  },
+
 };
 </script>
+<style scope>
+a:hover {
+  cursor: pointer;
+  opacity: 0.5;
+}
+
+a.router-link-exact-active {
+  cursor: pointer;
+  opacity: 0.5;
+}
+
+.theme--dark.v-sheet {
+  background-color: transparent !important;
+  color: white !important;
+}
+
+.v-application a {
+  color: white !important;
+  text-decoration: none;
+}
+</style>
