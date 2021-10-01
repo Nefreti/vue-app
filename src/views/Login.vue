@@ -52,7 +52,7 @@
                     <v-btn rounded outlined dark @click="step--">SIGN IN</v-btn>
                   </div>
                 </v-col>
-                <v-col cols="12" md="8">
+                <v-col ref="registeringForm" cols="12" md="8">
                   <v-card-text class="mt-12">
                     <h1 class="text-center display-2 light-blue--text text--accent-2">Sign up to Star Wars App</h1>
                     <h4 class="text-center mt-4">Please provide email address for registration</h4>
@@ -103,16 +103,20 @@ export default {
     loader: false
   }),
   methods: {
+    // User gets individual cookie which is valid for 2 days.
+    // This can be re-implemented with  Firebase Auth server-side session cookie management.
+    // For the sake of time I chose creating my own cookie-handler.
+
     async login() {
       try {
         const val = await firebase.auth().signInWithEmailAndPassword(this.email, this.password)
         console.log("login", val.user.email)
-        if(!checkCookie("loginCookie")){
+        if (!checkCookie("loginCookie")) {
           setCookie("loginCookie", "val.user.email", 2);
         }
         this.$router.replace({name: "Secret"})
       } catch (error) {
-        if(checkCookie("loginCookie")){
+        if (checkCookie("loginCookie")) {
           setCookie("loginCookie", "val.user.email", 0);
         }
         alert(error.message)
@@ -123,9 +127,14 @@ export default {
         const user = firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
         console.log("user", user)
       } catch (error) {
+        if (!error) {
+          this.$router.replace({name: "Home"})
+        }
         alert(error.message)
+        console.log(error)
       } finally {
         this.$router.replace({name: "Home"})
+
       }
     }
   }

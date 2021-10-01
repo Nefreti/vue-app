@@ -4,17 +4,21 @@
       <v-card-title>Star Wars App</v-card-title>
       <v-spacer></v-spacer>
       <v-list class="d-flex flex-row">
-        <v-list-item>
-          <router-link to="/">Home</router-link>
+        <v-list-item v-if="!loggedId">
+          <router-link to="/">Login</router-link>
         </v-list-item>
         <v-list-item>
+          <router-link to="/home">Home</router-link>
+        </v-list-item>
+        <v-list-item class="text-no-wrap">
           <router-link to="/secret">Main page</router-link>
         </v-list-item>
-         </v-list>
+      </v-list>
       <TopHeader/>
     </v-app-bar>
     <v-main>
-       <router-view/>
+      <router-view/>
+      <app-footer/>
     </v-main>
   </v-app>
 </template>
@@ -23,11 +27,12 @@
 
 import TopHeader from "@/components/Top-header";
 import firebase from "firebase";
+import AppFooter from "@/components/App-Footer";
 
 
 export default {
   name: 'App',
-  components: {TopHeader},
+  components: {AppFooter, TopHeader},
   data: () => ({
     loggedId: false,
   }), created() {

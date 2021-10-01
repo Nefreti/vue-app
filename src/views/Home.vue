@@ -8,7 +8,7 @@
           </v-row>
           <v-row>
             <v-col cols="12">
-              <v-card-text>You have been successfully registered to our application.
+              <v-card-text>You have been successfully logged in to our application.
                 Navigate to main page to explore interesting facts about Star Wars movies,
                 legendary characters and many many more...
               </v-card-text>

@@ -28,7 +28,7 @@
 
 <script>
 export default {
-  name: "showMore",
+  name: "showMoreFilms",
   props: {
     itemForAction: {
       required: true,

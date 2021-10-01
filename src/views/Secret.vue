@@ -1,19 +1,19 @@
 <template>
   <v-container>
+    <!--    <&#45;&#45;'Load more' data with vuetify build-in functionality. Use 'minus' and 'plus' icons in the table footer to load more data.-->
+    <!--    This is more user-friendly and keeps the clean design.-->
+    <!--    All columns are sortable using vuetify multi-sort prop. This enables to sort on multiple columns at the same time.-->
+    <!--    Vuetify table has also search prop that allows filter the data. This can be implemented later on.-->
+    <!--    I would also add ratings to make the table more interactive for users where they can rate the films for example. Also using Vuetify Ratings component.-->
     <v-data-table :headers="headers" :items="listOfPeople" :items-per-page="itemsPerPage" class="elevation-1"
                   :sort-by="['name', 'hair_color']"
                   :sort-desc="[true, true]"
-                  :footer-props="{
-      showFirstLastPage: true,
-      firstIcon: 'mdi-arrow-collapse-left',
-      lastIcon: 'mdi-arrow-collapse-right',
-      prevIcon: 'mdi-minus',
-      nextIcon: 'mdi-plus'
-    }">
+                  multi-sort
+                  :footer-props="{ showFirstLastPage: true, firstIcon: 'mdi-arrow-collapse-left', lastIcon: 'mdi-arrow-collapse-right', prevIcon: 'mdi-minus', nextIcon: 'mdi-plus'}">
       <template v-slot:item.films="{ item }">
         <v-list-item v-for="(title, index) in item.foundTitle" :key="index">
           <v-list-item-subtitle class="mx-2">{{ title.title }}</v-list-item-subtitle>
-          <Show-more :item-for-action="title"/>
+          <ShowMoreFilms :item-for-action="title"/>
         </v-list-item>
       </template>
       <template v-slot:item.starships="{ item }">
@@ -40,12 +40,12 @@
 <script>
 import axios from 'axios'
 import Loader from '@/components/Loader'
-import ShowMore from "@/components/ShowMore";
 import ShowMoreShips from "@/components/ShowMoreShips";
+import ShowMoreFilms from "@/components/ShowMoreFilms";
 
 export default {
   name: 'Secret',
-  components: {ShowMoreShips, ShowMore, Loader},
+  components: {ShowMoreFilms, ShowMoreShips, Loader},
   data: () => ({
     loader: false,
     headers: [
@@ -77,7 +77,6 @@ export default {
         let resolvePromise = await Promise.all(promises)
         let homeworldsList = []
         resolvePromise.forEach(p => homeworldsList.push(p.data))
-
         this.listOfPeople.forEach(p => {
           homeworldsList.filter(h => {
             if (p.homeworld === h.url) {
@@ -86,8 +85,6 @@ export default {
           })
         })
         console.log('foundHomeworld', homeworldsList)
-
-
       } catch (err) {
         console.log("error: ", err)
       }
@@ -104,7 +101,6 @@ export default {
             }
           })
         })
-        console.log('films', filmLists)
       } catch (error) {
         console.log(error)
       }
@@ -127,7 +123,6 @@ export default {
             }
           })
         })
-        console.log('startshipList', startshipList)
       } catch (err) {
         console.log("error: ", err)
       }
@@ -154,10 +149,6 @@ export default {
         this.loader = false
       }
     }
-  },
-
-  loadMore() {
-    return this.itemsPerPage = this.itemsPerPage + 2
   },
 
 }
