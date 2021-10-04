@@ -9,13 +9,13 @@
                 <v-col cols="12" md="8">
                   <v-card-text class="mt-12">
                     <h1 class="text-center display-2 light-blue--text text--accent-2">Sign in to Star Wars App</h1>
-                    <h4 class="text-center mt-4">Ensure using email provided for registration</h4>
+                    <h4 class="text-center mt-4">Ensure using user name provided for registration</h4>
                   </v-card-text>
                   <v-form @submit.prevent="login">
                     <v-card-text>
-                      <v-text-field prepend-icon="mdi-email" label="Email" value="john@starwars.com"
+                      <v-text-field prepend-icon="mdi-account" label="User Name" value="john@starwars.com"
                                     v-model="email"></v-text-field>
-                      <span class="text-caption grey--text text--darken-1">This is the email you will use to login to your Star Wars app account</span>
+                      <span class="text-caption grey--text text--darken-1">This is the user name you use to login to your Star Wars app account</span>
                     </v-card-text>
                     <v-card-text>
                       <v-text-field prepend-icon="mdi-lock" label="Password" type="password"
@@ -55,13 +55,13 @@
                 <v-col ref="registeringForm" cols="12" md="8">
                   <v-card-text class="mt-12">
                     <h1 class="text-center display-2 light-blue--text text--accent-2">Sign up to Star Wars App</h1>
-                    <h4 class="text-center mt-4">Please provide email address for registration</h4>
+                    <h4 class="text-center mt-4">Please provide user name for registration</h4>
                   </v-card-text>
                   <v-form @submit.prevent="register">
                     <v-card-text>
-                      <v-text-field prepend-icon="mdi-email" label="Email" value="john@vuetifyjs.com"
+                      <v-text-field prepend-icon="mdi-account" label="User Name" value="john@vuetifyjs.com"
                                     v-model="email"></v-text-field>
-                      <span class="text-caption grey--text text--darken-1">This is the email you will use to login to Star Wars App</span>
+                      <span class="text-caption grey--text text--darken-1">This is the user name you will use to login to Star Wars App</span>
                     </v-card-text>
                     <v-card-text>
                       <v-text-field prepend-icon="mdi-lock" label="Password" type="password"
@@ -74,6 +74,7 @@
                         Register
                       </v-btn>
                     </v-card-actions>
+                    <v-alert v-model="error">{{error.message}}</v-alert>
                   </v-form>
                 </v-col>
               </v-row>
@@ -109,12 +110,13 @@ export default {
 
     async login() {
       try {
-        const val = await firebase.auth().signInWithEmailAndPassword(this.email, this.password)
-        console.log("login", val.user.email)
+        let userName = this.email + '@domain.com'
+        let password = this.password
+        await firebase.auth().signInWithEmailAndPassword(userName, password)
         if (!checkCookie("loginCookie")) {
           setCookie("loginCookie", "val.user.email", 2);
         }
-        this.$router.replace({name: "Secret"})
+        this.$router.replace({name: "Home"})
       } catch (error) {
         if (checkCookie("loginCookie")) {
           setCookie("loginCookie", "val.user.email", 0);
@@ -124,20 +126,17 @@ export default {
     },
     async register() {
       try {
-        const user = firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
-        console.log("user", user)
+        let userName = this.email + '@domain.com'
+        let password = this.password
+        await firebase.auth().createUserWithEmailAndPassword(userName, password)
+        this.$router.replace({name: "Home"})
       } catch (error) {
-        if (!error) {
-          this.$router.replace({name: "Home"})
-        }
         alert(error.message)
         console.log(error)
-      } finally {
-        this.$router.replace({name: "Home"})
-
       }
     }
   }
+
 }
 </script>
 
